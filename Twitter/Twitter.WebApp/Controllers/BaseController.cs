@@ -1,8 +1,10 @@
-﻿namespace Twitter.WebApp.Controllers
+﻿using System.Web.Mvc;
+
+namespace Twitter.WebApp.Controllers
 {
     using Twitter.Data;
 
-    public class BaseController
+    public class BaseController : Controller
     {
         private ITwitterData data;
 

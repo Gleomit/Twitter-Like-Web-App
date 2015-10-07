@@ -15,8 +15,10 @@
 
         private ICollection<Notification> notifications;
 
-        private ICollection<Tweet> favouritedTweets; 
+        private ICollection<Tweet> favouritedTweets;
 
+        private ICollection<Report> reports;
+        
         public User()
         {
             this.followers = new HashSet<User>();
@@ -30,6 +32,8 @@
             this.notifications = new HashSet<Notification>();
 
             this.favouritedTweets = new HashSet<Tweet>();
+
+            this.reports = new HashSet<Report>();
         }
 
         public virtual ICollection<User> Followers
@@ -72,6 +76,12 @@
         {
             get { return this.favouritedTweets; }
             set { this.favouritedTweets = value; }
+        }
+
+        public virtual ICollection<Report> Reports
+        {
+            get { return this.reports; }
+            set { this.reports = value; }
         }
     }
 }

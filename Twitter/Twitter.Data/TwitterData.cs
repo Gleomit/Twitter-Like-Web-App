@@ -9,7 +9,10 @@
         private DbContext context;
 
         private IRepository<User> users;
-        private IRepository<Tweet> tweets; 
+        private IRepository<Tweet> tweets;
+
+        private IRepository<Message> messages;
+        private IRepository<Notification> notifications;
 
         public TwitterData(DbContext context)
         {
@@ -39,6 +42,32 @@
                 }
 
                 return this.tweets;
+            }
+        }
+
+        public IRepository<Message> Messages
+        {
+            get
+            {
+                if (this.messages == null)
+                {
+                    this.messages = new GenericRepository<Message>(this.context);
+                }
+
+                return this.messages;
+            }
+        }
+
+        public IRepository<Notification> Notifications
+        {
+            get
+            {
+                if (this.notifications == null)
+                {
+                    this.notifications = new GenericRepository<Notification>(this.context);
+                }
+
+                return this.notifications;
             }
         }
 

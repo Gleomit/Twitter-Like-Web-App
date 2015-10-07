@@ -208,6 +208,9 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\NotificationsController.cs" />
+    <Compile Include="Controllers\TweetsController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -289,6 +292,10 @@
     <ProjectReference Include="..\Twitter.Data\Twitter.Data.csproj">
       <Project>{ed27fdef-219d-498a-b2ad-b1413839747a}</Project>
       <Name>Twitter.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Twitter.Models\Twitter.Models.csproj">
+      <Project>{A58F9A1E-2526-4686-BD34-187967748E1D}</Project>
+      <Name>Twitter.Models</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

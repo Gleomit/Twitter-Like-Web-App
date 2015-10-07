@@ -9,6 +9,10 @@
 
         IRepository<Tweet> Tweets { get; }
 
+        IRepository<Message> Messages { get; }
+        
+        IRepository<Notification> Notifications { get; }  
+
         int SaveChanges();
     }
 }

@@ -1,13 +1,11 @@
-using System.Data.Entity.ModelConfiguration.Conventions;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Twitter.Data.Migrations;
-using Twitter.Models;
-
 namespace Twitter.Data
 {
-    using System;
     using System.Data.Entity;
-    using System.Linq;
+
+    using System.Data.Entity.ModelConfiguration.Conventions;
+    using Microsoft.AspNet.Identity.EntityFramework;
+    using Twitter.Data.Migrations;
+    using Twitter.Models;
 
     public class TwitterDbContext : IdentityDbContext<User>, ITwitterDbContext
     {
@@ -32,6 +30,7 @@ namespace Twitter.Data
         {
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
 
+            // User Followers
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Followers)
                 .WithMany(u => u.FollowedUsers)
@@ -42,6 +41,7 @@ namespace Twitter.Data
                     m.ToTable("UsersFollowers");
                 });
 
+            // User-Tweet favourites/favouritedBy
             modelBuilder.Entity<User>()
                 .HasMany(u => u.FavouritedTweets)
                 .WithMany(t => t.FavouritedBy)
@@ -53,14 +53,30 @@ namespace Twitter.Data
                         m.ToTable("FavouriteTweets");
                     });
 
+            // Retweets
             modelBuilder.Entity<Tweet>()
-                .HasMany(t => t.Retweets)
-                .WithOptional(t => t.RetweetedTweet);
+               .HasOptional(t => t.RetweetedTweet)
+               .WithMany(t => t.Retweets)
+               .HasForeignKey(r => r.RetweetedTweetId);
 
+            // Replies
             modelBuilder.Entity<Tweet>()
-                .HasMany(t => t.ReplyTweets)
-                .WithOptional(t => t.ReplyTo);
+                .HasOptional(t => t.ReplyTo)
+                .WithMany(t => t.ReplyTweets)
+                .HasForeignKey(r => r.ReplyToId);
 
+            // Tweet reports
+            modelBuilder.Entity<Report>()
+                .HasRequired(r => r.Tweet)
+                .WithMany(t => t.Reports)
+                .HasForeignKey(r => r.TweetId);
+
+            // User reports
+            modelBuilder.Entity<Report>()
+                .HasRequired(r => r.User)
+                .WithMany(u => u.Reports)
+                .HasForeignKey(r => r.UserId);
+            
             base.OnModelCreating(modelBuilder);
         }
     }

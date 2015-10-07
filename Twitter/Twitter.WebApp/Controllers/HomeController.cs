@@ -1,15 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-
-namespace Twitter.WebApp.Controllers
+﻿namespace Twitter.WebApp.Controllers
 {
-    public class HomeController : Controller
+    using System.Linq;
+    using System.Web.Mvc;
+    using Twitter.Data;
+
+    public class HomeController : BaseController
     {
+        public HomeController(ITwitterData data) : base(data)
+        {
+        }
+
+        public HomeController() : this(new TwitterData(new TwitterDbContext()))
+        {
+            
+        }
+
         public ActionResult Index()
         {
+            this.Data.Tweets.All().Count();
             return View();
         }
 
