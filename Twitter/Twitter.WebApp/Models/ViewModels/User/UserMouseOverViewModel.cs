@@ -16,7 +16,7 @@
 
         public int Following { get; set; }
 
-        public static Expression<Func<User, UserMouseOverViewModel>> Create
+        public static Expression<Func<ApplicationUser, UserMouseOverViewModel>> Create
         {
             get
             {

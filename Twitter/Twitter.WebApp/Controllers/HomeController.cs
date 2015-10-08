@@ -1,4 +1,7 @@
-﻿namespace Twitter.WebApp.Controllers
+﻿using System.Web.UI.WebControls;
+using Twitter.WebApp.Models.ViewModels.Tweet;
+
+namespace Twitter.WebApp.Controllers
 {
     using System.Linq;
     using System.Web.Mvc;
@@ -18,10 +21,15 @@
         private const int DefaultPageSize = 10;
         private const int DefaultStartPage = 0;
 
-        public ActionResult Index(int page = DefaultStartPage, int pageSize = DefaultPageSize)
+        [Route("{page:int?}")]
+        public ActionResult Index(int page = DefaultStartPage)
         {
-            this.Data.Tweets.All().Count();
-            return View();
+            var tweets = this.Data.Tweets.All()
+                                        .Select(TweetViewModel.Create)
+                                        .OrderByDescending(t => t.Date)
+                                        .ToList();
+
+            return View(tweets);
         }
 
         public ActionResult About()

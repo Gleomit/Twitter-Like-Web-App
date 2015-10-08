@@ -3,10 +3,10 @@
     using System.Collections.Generic;
     using Microsoft.AspNet.Identity.EntityFramework;
 
-    public class User : IdentityUser
+    public class ApplicationUser : IdentityUser
     {
-        private ICollection<User> followers;
-        private ICollection<User> followedUsers;
+        private ICollection<ApplicationUser> followers;
+        private ICollection<ApplicationUser> followedUsers;
 
         private ICollection<Tweet> tweets;
 
@@ -19,10 +19,10 @@
 
         private ICollection<Report> reports;
         
-        public User()
+        public ApplicationUser()
         {
-            this.followers = new HashSet<User>();
-            this.followedUsers = new HashSet<User>();
+            this.followers = new HashSet<ApplicationUser>();
+            this.followedUsers = new HashSet<ApplicationUser>();
 
             this.tweets = new HashSet<Tweet>();
 
@@ -38,13 +38,13 @@
 
         public string Nickname { get; set; }
 
-        public virtual ICollection<User> Followers
+        public virtual ICollection<ApplicationUser> Followers
         {
             get { return this.followers; }
             set { this.followers = value; }
         }
 
-        public virtual ICollection<User> FollowedUsers
+        public virtual ICollection<ApplicationUser> FollowedUsers
         {
             get { return this.followedUsers; }
             set { this.followedUsers = value; }

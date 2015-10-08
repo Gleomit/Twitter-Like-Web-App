@@ -21,7 +21,7 @@ namespace Twitter.WebApp.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("TwitterDbContext", throwIfV1Schema: false)
         {
         }
 

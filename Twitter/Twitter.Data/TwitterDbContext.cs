@@ -7,7 +7,7 @@ namespace Twitter.Data
     using Twitter.Data.Migrations;
     using Twitter.Models;
 
-    public class TwitterDbContext : IdentityDbContext<User>, ITwitterDbContext
+    public class TwitterDbContext : IdentityDbContext<ApplicationUser>, ITwitterDbContext
     {
         public TwitterDbContext()
             : base("name=TwitterDbContext")
@@ -31,7 +31,7 @@ namespace Twitter.Data
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
 
             // User Followers
-            modelBuilder.Entity<User>()
+            modelBuilder.Entity<ApplicationUser>()
                 .HasMany(u => u.Followers)
                 .WithMany(u => u.FollowedUsers)
                 .Map(m =>
@@ -42,7 +42,7 @@ namespace Twitter.Data
                 });
 
             // User-Tweet favourites/favouritedBy
-            modelBuilder.Entity<User>()
+            modelBuilder.Entity<ApplicationUser>()
                 .HasMany(u => u.FavouritedTweets)
                 .WithMany(t => t.FavouritedBy)
                 .Map(

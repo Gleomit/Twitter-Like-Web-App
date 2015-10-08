@@ -8,7 +8,7 @@
     {
         private DbContext context;
 
-        private IRepository<User> users;
+        private IRepository<ApplicationUser> users;
         private IRepository<Tweet> tweets;
 
         private IRepository<Message> messages;
@@ -19,13 +19,13 @@
             this.context = context;
         }
 
-        public IRepository<User> Users
+        public IRepository<ApplicationUser> Users
         {
             get
             {
                 if (this.users == null)
                 {
-                    this.users = new GenericRepository<User>(this.context);
+                    this.users = new GenericRepository<ApplicationUser>(this.context);
                 }
 
                 return this.users;

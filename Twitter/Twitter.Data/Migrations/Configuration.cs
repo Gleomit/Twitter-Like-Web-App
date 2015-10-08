@@ -9,10 +9,5 @@ namespace Twitter.Data.Migrations
             AutomaticMigrationsEnabled = true;
             AutomaticMigrationDataLossAllowed = true;
         }
-
-        protected override void Seed(Twitter.Data.TwitterDbContext context)
-        {
-           
-        }
     }
 }

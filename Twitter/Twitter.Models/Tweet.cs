@@ -6,14 +6,14 @@
 
     public class Tweet
     {
-        private ICollection<User> favouritedBy;
+        private ICollection<ApplicationUser> favouritedBy;
         private ICollection<Tweet> replyTweets;
         private ICollection<Tweet> retweets;
         private ICollection<Report> reports; 
 
         public Tweet()
         {
-            this.favouritedBy = new HashSet<User>();
+            this.favouritedBy = new HashSet<ApplicationUser>();
             this.replyTweets = new HashSet<Tweet>();
             this.retweets = new HashSet<Tweet>();
             this.reports = new HashSet<Report>();
@@ -25,7 +25,7 @@
         [Required]
         public string UserId { get; set; }
 
-        public virtual User User { get; set; }
+        public virtual ApplicationUser User { get; set; }
 
         public int? RetweetedTweetId { get; set; }
 
@@ -41,7 +41,7 @@
         [Required]
         public DateTime TweetDate { get; set; }
 
-        public virtual ICollection<User> FavouritedBy
+        public virtual ICollection<ApplicationUser> FavouritedBy
         {
             get { return this.favouritedBy; }
             set { this.favouritedBy = value; }

@@ -5,7 +5,7 @@
 
     public interface ITwitterData
     {
-        IRepository<User> Users { get; }
+        IRepository<ApplicationUser> Users { get; }
 
         IRepository<Tweet> Tweets { get; }
 
