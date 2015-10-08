@@ -36,6 +36,8 @@
             this.reports = new HashSet<Report>();
         }
 
+        public string Nickname { get; set; }
+
         public virtual ICollection<User> Followers
         {
             get { return this.followers; }
