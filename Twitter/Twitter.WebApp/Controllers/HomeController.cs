@@ -25,9 +25,11 @@ namespace Twitter.WebApp.Controllers
         public ActionResult Index(int page = DefaultStartPage)
         {
             var tweets = this.Data.Tweets.All()
-                                        .Select(TweetViewModel.Create)
-                                        .OrderByDescending(t => t.Date)
-                                        .ToList();
+                .OrderByDescending(t => t.TweetDate)
+                .Skip(page * DefaultPageSize)
+                .Take(DefaultPageSize)
+                .Select(TweetViewModel.Create)
+                .ToList();
 
             return View(tweets);
         }

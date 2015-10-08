@@ -1,4 +1,7 @@
-﻿namespace Twitter.WebApp
+﻿using Twitter.Data;
+using Twitter.Models;
+
+namespace Twitter.WebApp
 {
     using System;
     using Microsoft.AspNet.Identity;
@@ -14,7 +17,7 @@
         public void ConfigureAuth(IAppBuilder app)
         {
             // Configure the db context, user manager and signin manager to use a single instance per request
-            app.CreatePerOwinContext(ApplicationDbContext.Create);
+            app.CreatePerOwinContext(TwitterDbContext.Create);
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
             app.CreatePerOwinContext<ApplicationSignInManager>(ApplicationSignInManager.Create);
 

@@ -1,4 +1,7 @@
-﻿namespace Twitter.WebApp
+﻿using Twitter.Data;
+using Twitter.Models;
+
+namespace Twitter.WebApp
 {
     using System;
     using System.Security.Claims;
@@ -38,7 +41,7 @@
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context) 
         {
-            var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<ApplicationDbContext>()));
+            var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<TwitterDbContext>()));
             // Configure validation logic for usernames
             manager.UserValidator = new UserValidator<ApplicationUser>(manager)
             {

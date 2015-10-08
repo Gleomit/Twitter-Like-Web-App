@@ -1,4 +1,6 @@
-﻿namespace Twitter.WebApp.Controllers
+﻿using Twitter.Models;
+
+namespace Twitter.WebApp.Controllers
 {
     using System.Linq;
     using System.Threading.Tasks;

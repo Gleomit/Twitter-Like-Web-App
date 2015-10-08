@@ -1,4 +1,5 @@
-﻿using Twitter.Data;
+﻿using System.Web.Mvc;
+using Twitter.Data;
 
 namespace Twitter.WebApp.Controllers
 {
@@ -11,6 +12,12 @@ namespace Twitter.WebApp.Controllers
         public UsersController() : this(new TwitterData(new TwitterDbContext()))
         {
 
+        }
+
+        [Authorize]
+        public ActionResult Index()
+        {
+            return View();
         }
     }
 }
