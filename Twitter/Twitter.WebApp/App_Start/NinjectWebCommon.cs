@@ -1,5 +1,3 @@
-using Twitter.Data;
-
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Twitter.WebApp.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(Twitter.WebApp.App_Start.NinjectWebCommon), "Stop")]
 

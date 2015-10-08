@@ -15,7 +15,10 @@
             
         }
 
-        public ActionResult Index()
+        private const int DefaultPageSize = 10;
+        private const int DefaultStartPage = 0;
+
+        public ActionResult Index(int page = DefaultStartPage, int pageSize = DefaultPageSize)
         {
             this.Data.Tweets.All().Count();
             return View();

@@ -7,5 +7,10 @@ namespace Twitter.WebApp.Controllers
         public TweetsController(ITwitterData data) : base(data)
         {
         }
+
+        public TweetsController() : this(new TwitterData(new TwitterDbContext()))
+        {
+            
+        }
     }
 }

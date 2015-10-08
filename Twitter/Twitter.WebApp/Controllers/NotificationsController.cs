@@ -7,5 +7,10 @@ namespace Twitter.WebApp.Controllers
         public NotificationsController(ITwitterData data) : base(data)
         {
         }
+
+        public NotificationsController() : this(new TwitterData(new TwitterDbContext()))
+        {
+
+        }
     }
 }

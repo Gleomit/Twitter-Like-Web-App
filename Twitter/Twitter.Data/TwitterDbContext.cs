@@ -55,27 +55,23 @@ namespace Twitter.Data
 
             // Retweets
             modelBuilder.Entity<Tweet>()
-               .HasOptional(t => t.RetweetedTweet)
-               .WithMany(t => t.Retweets)
-               .HasForeignKey(r => r.RetweetedTweetId);
+                .HasOptional(t => t.RetweetedTweet)
+                .WithMany(t => t.Retweets);
 
             // Replies
             modelBuilder.Entity<Tweet>()
                 .HasOptional(t => t.ReplyTo)
-                .WithMany(t => t.ReplyTweets)
-                .HasForeignKey(r => r.ReplyToId);
+                .WithMany(t => t.ReplyTweets);
 
             // Tweet reports
             modelBuilder.Entity<Report>()
                 .HasRequired(r => r.Tweet)
-                .WithMany(t => t.Reports)
-                .HasForeignKey(r => r.TweetId);
+                .WithMany(t => t.Reports);
 
             // User reports
             modelBuilder.Entity<Report>()
                 .HasRequired(r => r.User)
-                .WithMany(u => u.Reports)
-                .HasForeignKey(r => r.UserId);
+                .WithMany(u => u.Reports);
             
             base.OnModelCreating(modelBuilder);
         }
