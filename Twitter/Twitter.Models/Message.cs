@@ -17,12 +17,12 @@
         [Required]
         public string SenderId { get; set; }
 
-        public virtual ApplicationUser Sender { get; set; }
+        public virtual User Sender { get; set; }
 
         [Required]
         public string ReceiverId { get; set; }
 
-        public virtual ApplicationUser Receiver { get; set; }
+        public virtual User Receiver { get; set; }
 
         [Required]
         public string Content { get; set; }

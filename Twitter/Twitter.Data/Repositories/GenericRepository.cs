@@ -6,8 +6,8 @@
     public class GenericRepository<T> : IRepository<T>
         where T : class
     {
-        protected DbContext context;
-        protected DbSet<T> set;
+        private readonly DbContext context;
+        private readonly IDbSet<T> set;
 
         public GenericRepository(DbContext context)
         {
@@ -30,19 +30,29 @@
             this.ChangeState(entity, EntityState.Added);
         }
 
-        public void Update(T entity)
+        public T Update(T entity)
         {
             this.ChangeState(entity, EntityState.Modified);
+            return entity;;
         }
 
-        public void Delete(T entity)
+        public T Delete(T entity)
         {
             this.ChangeState(entity, EntityState.Deleted);
+            return entity;
+        }
+
+        public T Delete(object id)
+        {
+            var entity = this.Find(id);
+            this.Delete(entity);
+            return entity;
         }
 
         private void ChangeState(T entity, EntityState state)
         {
             var entry = this.context.Entry(entity);
+
             if (entry.State == EntityState.Detached)
             {
                 this.set.Attach(entity);

@@ -1,7 +1,7 @@
 ﻿namespace Twitter.App.Controllers
 {
-    using Twitter.Data;
     using System.Web.Mvc;
+    using Twitter.Data.UnitOfWork;
 
     public class BaseController : Controller
     {

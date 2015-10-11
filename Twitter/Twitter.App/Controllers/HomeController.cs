@@ -2,9 +2,12 @@
 {
     using System.Linq;
     using System.Web.Mvc;
-    using Twitter.Data;
-
     using Twitter.App.Models.ViewModels.Tweet;
+
+    using System.Collections.Generic;
+    using Microsoft.AspNet.Identity;
+    using Twitter.App.Constants;
+    using Twitter.Data.UnitOfWork;
 
     public class HomeController : BaseController
     {
@@ -12,21 +15,31 @@
         {
         }
 
-        public HomeController() : this(new TwitterData(new TwitterDbContext()))
+        public ActionResult Index(int page = AppConstants.DefaultPageIndex)
         {
-            
-        }
+            List<TweetViewModel> tweets = new List<TweetViewModel>();
 
-        private const int DefaultPageSize = 10;
-        private const int DefaultStartPage = 0;
+            if (this.User.Identity.IsAuthenticated)
+            {
+                var user = this.Data.Users.Find(this.User.Identity.GetUserId());
 
-        [Route("{page:int?}")]
-        public ActionResult Index(int page = DefaultStartPage)
-        {
-            var tweets = this.Data.Tweets.All()
+                var followersIds = user.FollowedUsers.Select(u => u.Id).ToList();
+
+                tweets = this.Data.Tweets.All()
+                    .Where(t => t.UserId == user.Id || followersIds.Contains(t.UserId))
+                    .OrderByDescending(t => t.TweetDate)
+                    .Skip((page - 1)*AppConstants.DefaultPageSize)
+                    .Take(AppConstants.DefaultPageSize)
+                    .Select(TweetViewModel.Create)
+                    .ToList();
+
+                return View("~/Views/Users/Index.cshtml", tweets);
+            }
+
+            tweets = this.Data.Tweets.All()
                 .OrderByDescending(t => t.TweetDate)
-                .Skip(page * DefaultPageSize)
-                .Take(DefaultPageSize)
+                .Skip((page - 1)*AppConstants.DefaultPageSize)
+                .Take(AppConstants.DefaultPageSize)
                 .Select(TweetViewModel.Create)
                 .ToList();
 

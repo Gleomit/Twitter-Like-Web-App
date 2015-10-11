@@ -59,13 +59,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ITwitterData.cs" />
+    <Compile Include="UnitOfWork\ITwitterData.cs" />
     <Compile Include="ITwitterDbContext.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\GenericRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />
-    <Compile Include="TwitterData.cs" />
+    <Compile Include="UnitOfWork\TwitterData.cs" />
     <Compile Include="TwitterDbContext.cs" />
   </ItemGroup>
   <ItemGroup>

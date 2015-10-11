@@ -1,16 +1,12 @@
 ﻿namespace Twitter.App.Controllers
 {
-    using Twitter.Data;
+    using Twitter.Data.UnitOfWork;
 
     public class NotificationsController : BaseController
     {
-        public NotificationsController(ITwitterData data) : base(data)
+        public NotificationsController(ITwitterData data)
+            : base(data)
         {
-        }
-
-        public NotificationsController() : this(new TwitterData(new TwitterDbContext()))
-        {
-
         }
     }
 }

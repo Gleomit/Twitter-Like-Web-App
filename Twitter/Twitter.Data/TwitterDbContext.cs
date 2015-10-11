@@ -1,13 +1,12 @@
 namespace Twitter.Data
 {
     using System.Data.Entity;
-
     using System.Data.Entity.ModelConfiguration.Conventions;
     using Microsoft.AspNet.Identity.EntityFramework;
     using Twitter.Data.Migrations;
     using Twitter.Models;
 
-    public class TwitterDbContext : IdentityDbContext<ApplicationUser>, ITwitterDbContext
+    public class TwitterDbContext : IdentityDbContext<User>, ITwitterDbContext
     {
         public TwitterDbContext()
             : base("name=TwitterDbContext")
@@ -21,6 +20,8 @@ namespace Twitter.Data
 
         public virtual IDbSet<Notification> Notifications { get; set; }
 
+        public virtual IDbSet<Report> Reports { get; set; }
+
         public static TwitterDbContext Create()
         {
             return new TwitterDbContext();
@@ -31,7 +32,7 @@ namespace Twitter.Data
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
 
             // User Followers
-            modelBuilder.Entity<ApplicationUser>()
+            modelBuilder.Entity<User>()
                 .HasMany(u => u.Followers)
                 .WithMany(u => u.FollowedUsers)
                 .Map(m =>
@@ -42,7 +43,7 @@ namespace Twitter.Data
                 });
 
             // User-Tweet favourites/favouritedBy
-            modelBuilder.Entity<ApplicationUser>()
+            modelBuilder.Entity<User>()
                 .HasMany(u => u.FavouritedTweets)
                 .WithMany(t => t.FavouritedBy)
                 .Map(
@@ -72,7 +73,7 @@ namespace Twitter.Data
             modelBuilder.Entity<Report>()
                 .HasRequired(r => r.User)
                 .WithMany(u => u.Reports);
-            
+
             base.OnModelCreating(modelBuilder);
         }
     }

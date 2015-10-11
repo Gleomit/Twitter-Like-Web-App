@@ -10,8 +10,10 @@
 
         void Add(T entity);
 
-        void Update(T entity);
+        T Update(T entity);
 
-        void Delete(T entity);
+        T Delete(T entity);
+
+        T Delete(object id);
     }
 }

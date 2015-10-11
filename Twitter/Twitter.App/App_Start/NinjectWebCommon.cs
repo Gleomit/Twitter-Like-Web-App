@@ -5,26 +5,27 @@ using Ninject;
 using Ninject.Web.Common;
 using Twitter.Data;
 using Twitter.App;
+using Twitter.Data.UnitOfWork;
 
-[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(NinjectWebCommon), "Start")]
-[assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(NinjectWebCommon), "Stop")]
+[assembly: WebActivatorEx.PreApplicationStartMethod(typeof (NinjectWebCommon), "Start")]
+[assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof (NinjectWebCommon), "Stop")]
 
 namespace Twitter.App
 {
-    public static class NinjectWebCommon 
+    public static class NinjectWebCommon
     {
         private static readonly Bootstrapper bootstrapper = new Bootstrapper();
 
         /// <summary>
         /// Starts the application
         /// </summary>
-        public static void Start() 
+        public static void Start()
         {
-            DynamicModuleUtility.RegisterModule(typeof(OnePerRequestHttpModule));
-            DynamicModuleUtility.RegisterModule(typeof(NinjectHttpModule));
+            DynamicModuleUtility.RegisterModule(typeof (OnePerRequestHttpModule));
+            DynamicModuleUtility.RegisterModule(typeof (NinjectHttpModule));
             bootstrapper.Initialize(CreateKernel);
         }
-        
+
         /// <summary>
         /// Stops the application.
         /// </summary>
@@ -32,7 +33,7 @@ namespace Twitter.App
         {
             bootstrapper.ShutDown();
         }
-        
+
         /// <summary>
         /// Creates the kernel that will manage your application.
         /// </summary>
@@ -63,6 +64,6 @@ namespace Twitter.App
         {
             kernel.Bind<ITwitterDbContext>().To<TwitterDbContext>();
             kernel.Bind<ITwitterData>().To<TwitterData>().WithConstructorArgument("context", new TwitterDbContext());
-        }        
+        }
     }
 }

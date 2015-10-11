@@ -1,16 +1,16 @@
-﻿using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Identity;
-
-namespace Twitter.Models
+﻿namespace Twitter.Models
 {
     using System.Collections.Generic;
     using Microsoft.AspNet.Identity.EntityFramework;
 
-    public class ApplicationUser : IdentityUser
+    using System.Security.Claims;
+    using System.Threading.Tasks;
+    using Microsoft.AspNet.Identity;
+
+    public class User : IdentityUser
     {
-        private ICollection<ApplicationUser> followers;
-        private ICollection<ApplicationUser> followedUsers;
+        private ICollection<User> followers;
+        private ICollection<User> followedUsers;
 
         private ICollection<Tweet> tweets;
 
@@ -22,11 +22,11 @@ namespace Twitter.Models
         private ICollection<Tweet> favouritedTweets;
 
         private ICollection<Report> reports;
-        
-        public ApplicationUser()
+
+        public User()
         {
-            this.followers = new HashSet<ApplicationUser>();
-            this.followedUsers = new HashSet<ApplicationUser>();
+            this.followers = new HashSet<User>();
+            this.followedUsers = new HashSet<User>();
 
             this.tweets = new HashSet<Tweet>();
 
@@ -42,13 +42,13 @@ namespace Twitter.Models
 
         public string Nickname { get; set; }
 
-        public virtual ICollection<ApplicationUser> Followers
+        public virtual ICollection<User> Followers
         {
             get { return this.followers; }
             set { this.followers = value; }
         }
 
-        public virtual ICollection<ApplicationUser> FollowedUsers
+        public virtual ICollection<User> FollowedUsers
         {
             get { return this.followedUsers; }
             set { this.followedUsers = value; }
@@ -90,7 +90,7 @@ namespace Twitter.Models
             set { this.reports = value; }
         }
 
-        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
+        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<User> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);

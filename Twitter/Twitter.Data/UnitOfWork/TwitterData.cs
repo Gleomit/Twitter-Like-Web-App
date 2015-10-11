@@ -1,4 +1,4 @@
-﻿namespace Twitter.Data
+﻿namespace Twitter.Data.UnitOfWork
 {
     using System.Data.Entity;
     using Twitter.Data.Repositories;
@@ -8,7 +8,7 @@
     {
         private DbContext context;
 
-        private IRepository<ApplicationUser> users;
+        private IRepository<User> users;
         private IRepository<Tweet> tweets;
 
         private IRepository<Message> messages;
@@ -19,13 +19,13 @@
             this.context = context;
         }
 
-        public IRepository<ApplicationUser> Users
+        public IRepository<User> Users
         {
             get
             {
                 if (this.users == null)
                 {
-                    this.users = new GenericRepository<ApplicationUser>(this.context);
+                    this.users = new GenericRepository<User>(this.context);
                 }
 
                 return this.users;
