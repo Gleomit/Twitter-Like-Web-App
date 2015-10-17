@@ -1,37 +1,29 @@
 ﻿namespace Twitter.App.Models.ViewModels.Tweet
 {
     using System;
-    using System.Linq.Expressions;
     using Twitter.Models;
-    using System.Collections.Generic;
-    using System.Linq;
-    using Twitter.App.Models.ViewModels.User;
+    using Twitter.App.Infrastructure.Mapping;
 
-    public class TweetViewModel
+    using AutoMapper;
+
+    public class TweetViewModel : IMapFrom<Tweet>, ICustomMappings
     {
         public int Id { get; set; }
 
         public string Content { get; set; }
 
-        public DateTime Date { get; set; }
+        public DateTime TweetDate { get; set; }
 
-        public UserMouseOverViewModel User { get; set; }
+        public string Username { get; set; }
 
-        public static Expression<Func<Tweet, TweetViewModel>> Create
+        public string UserProfilePicture { get; set; }
+
+        public void CreateMappings(IConfiguration configuration)
         {
-            get
-            {
-                return t => new TweetViewModel()
-                {
-                    Id = t.Id,
-                    Content = t.Content,
-                    Date = t.TweetDate,
-                    User = new List<User>()
-                    {
-                        t.User
-                    }.AsQueryable().Select(UserMouseOverViewModel.Create).FirstOrDefault()
-                };
-            }
+            configuration.CreateMap<Tweet, TweetViewModel>()
+               .ForMember(t => t.Username, opt => opt.MapFrom(t => t.User.UserName))
+               .ForMember(t => t.UserProfilePicture, opt => opt.MapFrom(t => t.User.ProfileImageBase64))
+               .ReverseMap();
         }
     }
 }

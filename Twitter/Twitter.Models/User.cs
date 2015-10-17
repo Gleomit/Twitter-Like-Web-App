@@ -1,5 +1,7 @@
 ﻿namespace Twitter.Models
 {
+    using System;
+
     using System.Collections.Generic;
     using Microsoft.AspNet.Identity.EntityFramework;
 
@@ -40,7 +42,15 @@
             this.reports = new HashSet<Report>();
         }
 
+        public string ProfileImageBase64 { get; set; }
+
+        public string BackgroundImageBase64 { get; set; }
+
         public string Nickname { get; set; }
+
+        public string AboutMe { get; set; }
+
+        public DateTime RegistrationDate { get; set; }
 
         public virtual ICollection<User> Followers
         {

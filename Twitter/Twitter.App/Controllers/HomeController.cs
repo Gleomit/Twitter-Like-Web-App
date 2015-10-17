@@ -9,6 +9,8 @@
     using Twitter.App.Constants;
     using Twitter.Data.UnitOfWork;
 
+    using AutoMapper.QueryableExtensions;
+
     public class HomeController : BaseController
     {
         public HomeController(ITwitterData data) : base(data)
@@ -28,9 +30,9 @@
                 tweets = this.Data.Tweets.All()
                     .Where(t => t.UserId == user.Id || followersIds.Contains(t.UserId))
                     .OrderByDescending(t => t.TweetDate)
-                    .Skip((page - 1)*AppConstants.DefaultPageSize)
+                    .Skip((page - 1) * AppConstants.DefaultPageSize)
                     .Take(AppConstants.DefaultPageSize)
-                    .Select(TweetViewModel.Create)
+                    .ProjectTo<TweetViewModel>()
                     .ToList();
 
                 return View("~/Views/Users/Index.cshtml", tweets);
@@ -38,26 +40,12 @@
 
             tweets = this.Data.Tweets.All()
                 .OrderByDescending(t => t.TweetDate)
-                .Skip((page - 1)*AppConstants.DefaultPageSize)
+                .Skip((page - 1) * AppConstants.DefaultPageSize)
                 .Take(AppConstants.DefaultPageSize)
-                .Select(TweetViewModel.Create)
+                .ProjectTo<TweetViewModel>()
                 .ToList();
 
             return View(tweets);
-        }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
         }
     }
 }

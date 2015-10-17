@@ -1,0 +1,18 @@
+﻿@model Twitter.App.Models.ViewModels.Tweet.TweetViewModel
+
+<div class="tweet row">
+    <div>
+        <img src="@Model.UserProfilePicture"/>
+        <span>By <a href="@Url.Action("Profile", "Users", new {username = @Model.Username })">@Model.Username</a> </span>
+        <div class=" panel panel-default">
+            <p class="panel-body">@Model.Content</p>
+        </div>
+        <span>@Model.TweetDate</span>
+    </div>
+    
+    <div class="btn-group" role="group" aria-label="...">
+        <button type="button" class="btn btn-default">Reply</button>
+        <button type="button" class="btn btn-default">Retweet</button>
+        <button type="button" class="btn btn-default">Favourite</button>
+    </div>
+</div>  

@@ -1,4 +1,6 @@
-﻿namespace Twitter.App.Controllers
+﻿using System;
+
+namespace Twitter.App.Controllers
 {
     using System.Linq;
     using System.Threading.Tasks;
@@ -143,7 +145,7 @@
         {
             if (ModelState.IsValid)
             {
-                var user = new User {UserName = model.Username, Email = model.Email};
+                var user = new User {UserName = model.Username, Email = model.Email, RegistrationDate = DateTime.Now, ProfileImageBase64 = "http://www.tagetik.com/intouch2015/user.png" };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

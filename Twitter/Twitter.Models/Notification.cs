@@ -3,6 +3,8 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
+    using Twitter.Models.Enumerations;
+
     public class Notification
     {
         [Key]
@@ -18,5 +20,8 @@
 
         [Required]
         public DateTime Date { get; set; }
+
+        [Required]
+        public NotificationType Type { get; set; }
     }
 }
