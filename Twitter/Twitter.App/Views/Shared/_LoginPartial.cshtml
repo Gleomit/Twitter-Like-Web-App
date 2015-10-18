@@ -7,10 +7,22 @@
 
         <ul class="nav navbar-nav navbar-right">
             <li>
-                @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", null, new {title = "Manage"})
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                    @this.User.Identity.GetUserName()
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">My profile</a></li>
+                    <li><a href="#">Favorited</a></li>
+                    <li><a href="#">Settings</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Logout</a></li>
+                </ul>
             </li>
             <li>
                 <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+            </li>
+            <li>
+                <a class="" data-toggle="modal" data-target="#myModal">Tweet</a>
             </li>
         </ul>
     }

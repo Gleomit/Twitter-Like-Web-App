@@ -1,6 +1,6 @@
 ﻿body {
     padding-bottom: 20px;
-    padding-top: 51px;
+    padding-top: 65px;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -10,14 +10,20 @@
     padding-right: 15px;
 }
 
-/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
-*/
+@media screen and (min-width:768px){
+    .navbar-brand-centered {
+        margin-bottom: -5px;
+        position: absolute;
+        left: 50%;
+        display: block;
+        width: 160px;
+        text-align: center;
+        background-color: #eee;
+    }
+    .navbar>.container .navbar-brand-centered, 
+    .navbar>.container-fluid .navbar-brand-centered {
+        margin-left: -80px;
+    }
+}
 
-.dl-horizontal dt { white-space: normal; }
 
-/* Set width on the form input elements since they're 100% wide by default */
-
-input,
-select,
-textarea { max-width: 280px; }

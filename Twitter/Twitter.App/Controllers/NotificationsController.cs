@@ -1,8 +1,8 @@
-﻿using System.Linq;
-using Microsoft.AspNet.Identity;
-
-namespace Twitter.App.Controllers
+﻿namespace Twitter.App.Controllers
 {
+    using System.Linq;
+    using Microsoft.AspNet.Identity;
+
     using Twitter.Data.UnitOfWork;
     using System.Web.Mvc;
 
@@ -20,9 +20,10 @@ namespace Twitter.App.Controllers
         public ActionResult All(int page = AppConstants.DefaultPageIndex)
         {
             var user = this.Data.Users.Find(this.User.Identity.GetUserId());
+
             var notifications = user.Notifications
                 .OrderByDescending(n => n.Date)
-                .Skip(page - 1*AppConstants.DefaultPageSize)
+                .Skip(page - 1 * AppConstants.DefaultPageSize)
                 .Take(AppConstants.DefaultPageSize)
                 .ToList();
 
