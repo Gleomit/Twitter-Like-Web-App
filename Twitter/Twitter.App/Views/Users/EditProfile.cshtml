@@ -1,1 +1,12 @@
-﻿
+﻿@model Twitter.App.Models.ViewModels.User.UserEditProfileViewModel
+
+<div class="row">
+    @using (Html.BeginForm("EditProfile", "Users", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @*@Html.TextBoxFor(m => m.ProfileImageData, new { type = "file" })*@
+        @Html.LabelFor(m => m.Nickname)
+        @Html.EditorFor(m => m.Nickname, new { value = Model.Nickname })
+        <input type="submit" value="Save Changes"/>
+    }
+</div>

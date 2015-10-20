@@ -1,4 +1,6 @@
-﻿namespace Twitter.App.Controllers
+﻿using System.Web;
+
+namespace Twitter.App.Controllers
 {
     using System;
     using Twitter.App.Models.BindingModels.User;
@@ -215,7 +217,12 @@
         {
             var user = this.Data.Users.Find(this.User.Identity.GetUserId());
 
-            return View();
+            var viewModel = new UserEditProfileViewModel()
+            {
+                Nickname = user.Nickname
+            };
+
+            return View(viewModel);
         }
 
         [Authorize]
@@ -230,7 +237,20 @@
 
             var user = this.Data.Users.Find(this.User.Identity.GetUserId());
 
-            return null;
+            //user.ProfileImageBase64 = GetBase64String(Request.Files[0]);
+            user.Nickname = model.Nickname;
+
+            this.Data.SaveChanges();
+
+            return RedirectToAction("Profile", new { username = user.UserName });
+        }
+
+        private string GetBase64String(HttpPostedFileBase file)
+        {
+            byte[] fileBuffer = new byte[file.ContentLength];
+            file.InputStream.Read(fileBuffer, 0, file.ContentLength);
+
+            return Convert.ToBase64String(fileBuffer);
         }
     }
 }
