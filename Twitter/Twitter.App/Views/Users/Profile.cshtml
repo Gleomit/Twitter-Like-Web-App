@@ -10,12 +10,12 @@
                 <ul class="inline stats">
                     <li>
                         <span>
-                            @Ajax.ActionLink(" ", "Tweets", "Users", new { username = Model.Username }, new AjaxOptions
-                            {
-                                UpdateTargetId = "profileAjaxContainer",
-                                HttpMethod = "GET",
-                                InsertionMode = InsertionMode.Replace,
-                            })
+                            @Ajax.ActionLink(Model.Tweets.Count.ToString(), "Tweets", "Users", new { username = Model.Username }, new AjaxOptions
+                       {
+                           UpdateTargetId = "profileAjaxContainer",
+                           HttpMethod = "GET",
+                           InsertionMode = InsertionMode.Replace,
+                       })
                         </span>
                         Tweets
                     </li>
@@ -28,27 +28,47 @@
                         Followers
                     </li>
                     <li>
-                        <span><a href="@Url.Action("Favourites", "Users", new {username = @Model.Username})">@Model.FavouritesCount</a></span>
+                        <span>
+                            @Ajax.ActionLink(Model.FavouritesCount.ToString(), "Favourites", "Users", new { username = Model.Username }, new AjaxOptions
+                            {
+                                UpdateTargetId = "profileAjaxContainer",
+                                HttpMethod = "GET",
+                                InsertionMode = InsertionMode.Replace,
+                            })
+                        </span>
                         Favourites
                     </li>
                 </ul>
+
             </div>
         </div>
         <div class="row">
-            @Ajax.ActionLink("Follow", "Follow", "Users", new { username = @Model.Username }, new AjaxOptions()
+            @if (Request.IsAuthenticated && Model.IsMe == false)
             {
-                HttpMethod = "POST"
-            })
+                if (Model.Followed)
+                {
+                    @Ajax.ActionLink("Unfollow", "Unfollow", "Users", new { username = @Model.Username }, new AjaxOptions()
+                    {
+                        HttpMethod = "POST"
+                    })
+                }
+                else
+                {
+                    @Ajax.ActionLink("Follow", "Follow", "Users", new {username = @Model.Username}, new AjaxOptions()
+                    {
+                        HttpMethod = "POST"
+                    })
+                }
+            }
         </div>
     </div>
-    <div class="row profileAjaxContainer">
+    <div class="row">
         <div class="col-lg-4">
            
         </div>
-        <div class="col-lg-8">
-            @foreach (var tweet in @Model.Tweets)
-            {
-                Html.RenderPartial("~/Views/Tweets/_TweetsPartial.cshtml", tweet);
+        <div class="col-lg-8" id="profileAjaxContainer">
+            @{
+                Html.RenderPartial("~/Views/Tweets/_TweetsPartial.cshtml", @Model.Tweets);
             }
         </div>
     </div>

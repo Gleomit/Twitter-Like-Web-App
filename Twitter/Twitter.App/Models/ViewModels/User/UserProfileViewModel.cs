@@ -30,6 +30,8 @@
 
         public bool Followed { get; set; }
 
+        public bool IsMe { get; set; }
+
         public void CreateMappings(IConfiguration configuration)
         {
             configuration.CreateMap<User, UserProfileViewModel>()

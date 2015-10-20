@@ -18,11 +18,17 @@
 
         public string UserProfilePicture { get; set; }
 
+        public int FavouritesCount { get; set; }
+
+        public int RetweetsCount { get; set; }
+
         public void CreateMappings(IConfiguration configuration)
         {
             configuration.CreateMap<Tweet, TweetViewModel>()
                .ForMember(t => t.Username, opt => opt.MapFrom(t => t.User.UserName))
                .ForMember(t => t.UserProfilePicture, opt => opt.MapFrom(t => t.User.ProfileImageBase64))
+               .ForMember(t => t.FavouritesCount, opt => opt.MapFrom(t => t.FavouritedBy.Count))
+               .ForMember(t => t.RetweetsCount, opt => opt.MapFrom(t => t.Retweets.Count))
                .ReverseMap();
         }
     }

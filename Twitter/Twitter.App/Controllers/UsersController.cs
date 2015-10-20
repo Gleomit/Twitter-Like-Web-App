@@ -90,23 +90,54 @@
             }
 
             var userProfile = Mapper.Map<UserProfileViewModel>(user);
+
             userProfile.Followed = false;
 
             var currentUser = this.Data.Users.Find(this.User.Identity.GetUserId());
 
             if (currentUser != null)
             {
-                if (!currentUser.FollowedUsers.Any(u => u.Id == user.Id))
+                if (currentUser.FollowedUsers.Any(u => u.Id == user.Id))
                 {
                     userProfile.Followed = true;
-                }    
+                }
+
+                if (currentUser.Id == user.Id)
+                {
+                    userProfile.IsMe = true;
+                }
             }
 
             return View(userProfile);
         }
 
+        [Authorize]
+        [HttpPost]
+        public ActionResult Unfollow(string username)
+        {
+            var user = this.Data.Users.All().FirstOrDefault(u => u.UserName == username);
+
+            if (user == null)
+            {
+                throw new ArgumentException("User not found");
+            }
+
+            var currentUser = this.Data.Users.Find(this.User.Identity.GetUserId());
+
+            if (!user.Followers.Any(u => u == currentUser))
+            {
+                return Json("You cannot unfollow someone whom you currently do not follow");
+            }
+
+            user.Followers.Remove(currentUser);
+
+            this.Data.SaveChanges();
+
+            return null;
+        }
+
         [HttpGet]
-        public ActionResult Followers(string username)
+        public ActionResult Followers(string username, int page = AppConstants.DefaultPageIndex)
         {
             var user = this.Data.Users.All().FirstOrDefault(u => u.UserName == username);
 
@@ -115,7 +146,10 @@
                 throw new ArgumentException("User does not exists");
             }
 
-            var followers = user.Followers.ToList();
+            var followers = user.Followers
+                .Skip((page - 1)*AppConstants.DefaultPageSize)
+                .Take(AppConstants.DefaultPageSize)
+                .AsQueryable();
 
             return null;
         }
@@ -136,7 +170,7 @@
         }
 
         [HttpGet]
-        public ActionResult Favourites(string username)
+        public ActionResult Favourites(string username, int page = AppConstants.DefaultPageIndex)
         {
             var user = this.Data.Users.All().FirstOrDefault(u => u.UserName == username);
 
@@ -145,11 +179,18 @@
                 throw new ArgumentException("User does not exists");
             }
 
-            return null;
+            var favouriteTweets = user.FavouritedTweets
+                .Skip((page - 1)*AppConstants.DefaultPageSize)
+                .Take(AppConstants.DefaultPageSize)
+                .AsQueryable()
+                .ProjectTo<TweetViewModel>()
+                .ToList();
+
+            return PartialView("~/Views/Tweets/_TweetsPartial.cshtml", favouriteTweets);
         }
 
         [HttpGet]
-        public ActionResult Tweets(string username)
+        public ActionResult Tweets(string username, int page = AppConstants.DefaultPageIndex)
         {
             var user = this.Data.Users.All().FirstOrDefault(u => u.UserName == username);
 
@@ -158,7 +199,14 @@
                 throw new ArgumentException("User does not exists");
             }
 
-            return null;
+            var tweets = user.Tweets
+                .Skip((page - 1) * AppConstants.DefaultPageSize)
+                .Take(AppConstants.DefaultPageSize)
+                .AsQueryable()
+                .ProjectTo<TweetViewModel>()
+                .ToList();
+
+            return PartialView("~/Views/Tweets/_TweetsPartial.cshtml", tweets);
         }
 
         [Authorize]

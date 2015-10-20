@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<Twitter.App.Models.ViewModels.Tweet.TweetViewModel>
-
 <div class="col-lg-4"></div>
 
 <div class="col-lg-8 ">
@@ -13,9 +12,8 @@
             }
         </div>
     </div>
-
-    @foreach (var tweet in Model)
-    {
-        Html.RenderPartial("~/Views/Tweets/_TweetsPartial.cshtml", tweet);
+    @{
+        Html.RenderPartial("~/Views/Tweets/_TweetsPartial.cshtml", Model);
     }
+    ;
 </div>

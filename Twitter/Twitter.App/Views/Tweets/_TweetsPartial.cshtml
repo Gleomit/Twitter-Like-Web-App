@@ -1,29 +1,5 @@
-﻿@model Twitter.App.Models.ViewModels.Tweet.TweetViewModel
-
-<div class="tweet">
-    <div>
-        <img src="@Model.UserProfilePicture" class="tweetUserProfileImage"/>
-        <span><a href="@Url.Action("Profile", "Users", new {username = @Model.Username })">@Model.Username</a> </span>
-        <div class=" panel panel-default">
-            <p class="panel-body">@Model.Content</p>
-        </div>
-        <span>@Model.TweetDate</span>
-    </div>
-
-    <div class="">
-        <a href="#"><i class="fa fa-reply"></i></a>
-        @Ajax.ActionLink(" ", "Retweet", "Tweets", new { id = Model.Id }, new AjaxOptions
-        {
-            UpdateTargetId = "retweetModalContainer",
-            HttpMethod = "GET",
-            InsertionMode = InsertionMode.Replace,
-            OnComplete = "OnShowRetweetModal"
-        }, new { @class = "fa fa-retweet", id = "retweetBtn" })
-        <a href="#"><i class="fa fa-star"></i></a>
-        <a href="#"><i class="fa fa-share"></i></a>
-    </div>
-</div>  
-
-@section scripts{
-    @Scripts.Render("~/bundles/app")
+﻿@model IEnumerable<Twitter.App.Models.ViewModels.Tweet.TweetViewModel>
+@foreach (var tweet in Model)
+{
+    Html.RenderPartial("~/Views/Tweets/_FullTweetPartial.cshtml", tweet);
 }

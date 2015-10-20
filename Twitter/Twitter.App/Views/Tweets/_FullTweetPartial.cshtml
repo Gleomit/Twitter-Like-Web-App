@@ -1,0 +1,34 @@
+﻿@model Twitter.App.Models.ViewModels.Tweet.TweetViewModel
+<div class="tweet container">
+    <div class="col-lg-4">
+        <img src="@Model.UserProfilePicture" class="tweetUserProfileImage" />
+        <span><a href="@Url.Action("Profile", "Users", new {username = @Model.Username })">@Model.Username</a></span>
+
+    </div>
+    <div class="col-lg-8">
+        <div class=" panel panel-default">
+            <p class="panel-body">@Model.Content</p>
+        </div>
+        <div>
+            <a href="#"><i class="fa fa-reply"></i></a>
+            @Ajax.ActionLink(" " + Model.RetweetsCount, "Retweet", "Tweets", new { id = Model.Id }, new AjaxOptions
+            {
+                UpdateTargetId = "retweetModalContainer",
+                HttpMethod = "GET",
+                InsertionMode = InsertionMode.Replace,
+                OnComplete = "OnShowRetweetModal"
+            }, new { @class = "fa fa-retweet", id = "retweetBtn" })
+            @Ajax.ActionLink(" " + Model.FavouritesCount, "Favourite", "Tweets", new { id = Model.Id }, new AjaxOptions()
+            {
+                HttpMethod = "POST",
+                OnComplete = "OnTweetFavourite"
+            }, new { @class = "fa fa-star" })
+            <a href="#"><i class="fa fa-share"></i></a>
+        </div>
+        <span>@Model.TweetDate</span>
+    </div>
+</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/app")
+}

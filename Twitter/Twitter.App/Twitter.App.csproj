@@ -313,6 +313,7 @@
     <Content Include="Views\Tweets\_ReTweetPartial.cshtml" />
     <Content Include="Views\Shared\_NavbarPartial.cshtml" />
     <Content Include="Views\Users\EditProfile.cshtml" />
+    <Content Include="Views\Tweets\_FullTweetPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
