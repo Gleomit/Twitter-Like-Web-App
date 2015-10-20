@@ -3,11 +3,28 @@
     padding-top: 65px;
 }
 
-/* Set padding to keep content from hitting the edges */
-
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+}
+
+.register input[type="text"], .register input[type="password"], .login input[type="text"], .login input[type="password"] {
+    width: 30%;
+}
+
+.tweetUserProfileImage {
+    width: 30px;
+}
+
+.userProfileImage {
+    width: 120px;
+}
+
+.tweet {
+    margin-top: 10px;
+    border: 1px solid #a9a9a9;
+    border-radius: 5px;
+    padding: 15px;
 }
 
 @media screen and (min-width:768px){

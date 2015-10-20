@@ -5,8 +5,10 @@
   
 }
 .stats li{
-  width:125px; 
+  width:125px;
+    display: inline-block;
 }
+
 .stats span{
   font-family:Helvetica;
   font-weight:bold;

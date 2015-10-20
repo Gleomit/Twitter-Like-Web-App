@@ -1,43 +1,55 @@
 ﻿@model Twitter.App.Models.ViewModels.User.UserProfileViewModel
-<div class="container profile">
-    <div class="row">
-        <div class="span12">
-            <div class="well well-small clearfix">
-                <div class="row-fluid">
-                    <div class="span2">
-                        <img src="@Model.ProfileImageBase64" class="img-polaroid" />
-                    </div>
-                    <div class="span4">
-                        <h2>@Model.Username</h2>
-                        <ul class="unstyled">
-                            @*<li><i class="icon-phone"></i> 916-241-3613</li>
-                                <li><i class="icon-envelope"></i> jonniespratley@me.com</li>
-                                <li><i class="icon-globe"></i> http://jonniespratley.me</li>*@
-                        </ul>
-                    </div>
-                    <div class="span6">
-                        <ul class="inline stats">
-                            <li>
-                                <span><a href="@Url.Action("Tweets", "Users", new {username = @Model.Username })">@Model.TweetsCount</a></span>
-                                Tweets
-                            </li>
-                            <li>
-                                <span><a href="@Url.Action("Following", "Users", new {username = @Model.Username})">@Model.FollowingCount</a></span>
-                                Following
-                            </li>
-                            <li>
-                                <span> <a href="@Url.Action("Followers", "Users", new {username = @Model.Username})">@Model.FollowersCount</a></span>
-                                Followers
-                            </li>
-                            <li>
-                                <span><a href="@Url.Action("Favourites", "Users", new {username = @Model.Username})">@Model.FavouritesCount</a></span>
-                                Favourites
-                            </li>
-                        </ul>
-                        <div>
-                            <!--/span6-->
-                        </div><!--/row-->
-                    </div>
-                    <!--Body content-->
-                </div>
+<div class="container">
+    <div class="jumbotron container">
+        <div class="row">
+            <div class="col-lg-4 text-center">
+                <img src="@Model.ProfileImageBase64" class="userProfileImage"/>
+                <h1>@Model.Username</h1>
             </div>
+            <div class="col-lg-8">
+                <ul class="inline stats">
+                    <li>
+                        <span>
+                            @Ajax.ActionLink(" ", "Tweets", "Users", new { username = Model.Username }, new AjaxOptions
+                            {
+                                UpdateTargetId = "profileAjaxContainer",
+                                HttpMethod = "GET",
+                                InsertionMode = InsertionMode.Replace,
+                            })
+                        </span>
+                        Tweets
+                    </li>
+                    <li>
+                        <span><a href="@Url.Action("Following", "Users", new {username = @Model.Username})">@Model.FollowingCount</a></span>
+                        Following
+                    </li>
+                    <li>
+                        <span> <a href="@Url.Action("Followers", "Users", new {username = @Model.Username})">@Model.FollowersCount</a></span>
+                        Followers
+                    </li>
+                    <li>
+                        <span><a href="@Url.Action("Favourites", "Users", new {username = @Model.Username})">@Model.FavouritesCount</a></span>
+                        Favourites
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            @Ajax.ActionLink("Follow", "Follow", "Users", new { username = @Model.Username }, new AjaxOptions()
+            {
+                HttpMethod = "POST"
+            })
+        </div>
+    </div>
+    <div class="row profileAjaxContainer">
+        <div class="col-lg-4">
+           
+        </div>
+        <div class="col-lg-8">
+            @foreach (var tweet in @Model.Tweets)
+            {
+                Html.RenderPartial("~/Views/Tweets/_TweetsPartial.cshtml", tweet);
+            }
+        </div>
+    </div>
+</div>

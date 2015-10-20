@@ -15,9 +15,17 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="navbar-brand-centered">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                <li>@Html.ActionLink("Notifications", "All", "Notifications")</li>
+                <li>
+                    @Html.ActionLink(" Home", "Index", "Home", null, new { @class = "fa fa-home" })
+                </li>
+                @if (Request.IsAuthenticated)
+                {
+                <li>
+                    @Html.ActionLink(" Notifications", "All", "Notifications", null, new { @class = "fa fa-bell" })
+                </li>
+                }
             </ul>
+
             <ul class="nav navbar-nav navbar-right">
                 @Html.Partial("_LoginPartial")
             </ul>

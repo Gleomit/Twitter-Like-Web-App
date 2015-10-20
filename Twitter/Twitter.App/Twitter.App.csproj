@@ -230,6 +230,8 @@
     <Compile Include="Models\BindingModels\User\UserEditProfileBindingModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ViewModels\Notification\NotificationViewModel.cs" />
+    <Compile Include="Models\ViewModels\Tweet\CreateTweetViewModel.cs" />
+    <Compile Include="Models\ViewModels\Tweet\RetweetViewModel.cs" />
     <Compile Include="Models\ViewModels\Tweet\TweetViewModel.cs" />
     <Compile Include="Models\ViewModels\User\UserEditProfileViewModel.cs" />
     <Compile Include="Models\ViewModels\User\UserMiniViewModel.cs" />
@@ -241,14 +243,22 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\font-awesome.css" />
+    <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\UserProfile.css" />
     <Content Include="favicon.ico" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\App\app.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="fonts\FontAwesome.otf" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -296,7 +306,6 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Users\Index.cshtml" />
-    <Content Include="Views\Shared\_UserProfileLayout.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
     <Content Include="Views\Tweets\_TweetsPartial.cshtml" />
     <Content Include="Views\Users\Profile.cshtml" />

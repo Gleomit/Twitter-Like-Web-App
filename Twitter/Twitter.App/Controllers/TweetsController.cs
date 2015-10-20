@@ -1,4 +1,6 @@
-﻿namespace Twitter.App.Controllers
+﻿using Twitter.App.Models.ViewModels.Tweet;
+
+namespace Twitter.App.Controllers
 {
     using System;
     using System.Linq;
@@ -86,17 +88,27 @@
 
             var user = this.Data.Users.Find(this.User.Identity.GetUserId());
 
-            if (tweet.UserId == user.Id)
-            {
-                throw new Exception("You can't retweet your own tweets");
-            }
-
             if (user.Tweets.Any(t => t.ReplyToId == tweet.Id))
             {
                 throw new Exception("You cannot retweet again");
             }
 
-            return PartialView("_ReTweetPartial");
+            var viewModel = new RetweetViewModel()
+            {
+                TweetContent = tweet.Content,
+                UserPicture = tweet.User.ProfileImageBase64,
+                Username = tweet.User.UserName,
+                TweetId = tweet.Id
+            };
+
+            return PartialView("_ReTweetPartial", viewModel);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public ActionResult Tweet()
+        {
+            return PartialView("_CreateTweetPartial", new CreateTweetViewModel());
         }
 
         [Authorize]

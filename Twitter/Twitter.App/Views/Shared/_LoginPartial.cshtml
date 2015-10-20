@@ -11,18 +11,25 @@
                     @this.User.Identity.GetUserName()
                 </a>
                 <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">My profile</a></li>
-                    <li><a href="#">Favorited</a></li>
-                    <li><a href="#">Settings</a></li>
+
+                    <li>
+                        @Html.ActionLink(" My profile", "Profile", "Users",
+                                 new {username = @User.Identity.GetUserName()},
+                                 new {@class = "fa fa-user"})
+                    </li>
+                    <li>@Html.ActionLink(" Manage profile", "Index", "Manage", null, new { @class = "fa fa-wrench" })</li>
                     <li class="divider"></li>
-                    <li><a href="#">Logout</a></li>
+                    <li><a href="javascript:document.getElementById('logoutForm').submit()" class="fa fa-sign-out"> Logout</a></li>
                 </ul>
             </li>
             <li>
-                <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
-            </li>
-            <li>
-                <a class="" data-toggle="modal" data-target="#myModal">Tweet</a>
+                @Ajax.ActionLink(" Tweet", "Tweet", "Tweets", null, new AjaxOptions
+                {
+                    UpdateTargetId = "tweetModalContainer",
+                    HttpMethod = "GET",
+                    InsertionMode = InsertionMode.Replace,
+                    OnComplete = "OnCreateTweetModal"
+                }, new { @class = "fa fa-pencil", id = "tweetBtn" })
             </li>
         </ul>
     }

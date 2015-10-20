@@ -4,6 +4,9 @@
     using Twitter.App.Infrastructure.Mapping;
     using Twitter.Models;
     using AutoMapper;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Twitter.App.Models.ViewModels.Tweet;
 
     public class UserProfileViewModel : IMapFrom<User>, ICustomMappings
     {
@@ -23,7 +26,9 @@
 
         public int FavouritesCount { get; set; }
 
-        public int TweetsCount { get; set; }
+        public List<TweetViewModel> Tweets { get; set; } 
+
+        public bool Followed { get; set; }
 
         public void CreateMappings(IConfiguration configuration)
         {
@@ -31,7 +36,7 @@
                .ForMember(u => u.FollowingCount, opt => opt.MapFrom(u => u.FollowedUsers.Count))
                .ForMember(u => u.FollowersCount, opt => opt.MapFrom(u => u.Followers.Count))
                .ForMember(u => u.FavouritesCount, opt => opt.MapFrom(u => u.FavouritedTweets.Count))
-               .ForMember(u => u.TweetsCount, opt => opt.MapFrom(u => u.Tweets.Count))
+               .ForMember(u => u.Tweets, opt => opt.MapFrom(u => u.Tweets.Where(t => t.ReplyToId == null)))
                .ReverseMap();
         }
     }

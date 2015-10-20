@@ -46,7 +46,7 @@
         }
 
         [Authorize]
-        [HttpGet]
+        [HttpPost]
         public ActionResult Follow(string username)
         {
             var user = this.Data.Users.All().FirstOrDefault(u => u.UserName == username);
@@ -90,6 +90,17 @@
             }
 
             var userProfile = Mapper.Map<UserProfileViewModel>(user);
+            userProfile.Followed = false;
+
+            var currentUser = this.Data.Users.Find(this.User.Identity.GetUserId());
+
+            if (currentUser != null)
+            {
+                if (!currentUser.FollowedUsers.Any(u => u.Id == user.Id))
+                {
+                    userProfile.Followed = true;
+                }    
+            }
 
             return View(userProfile);
         }
