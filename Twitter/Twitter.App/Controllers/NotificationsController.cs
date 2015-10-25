@@ -46,7 +46,7 @@ namespace Twitter.App.Controllers
 
             int notificationsCount = user.Notifications.Count(n => n.Status == NotificationStatus.NotSeen);
 
-            return this.Json(notificationsCount, JsonRequestBehavior.AllowGet);
+            return this.Content(notificationsCount.ToString());
         }
 
         [Authorize]

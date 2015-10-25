@@ -21,7 +21,6 @@
             @Ajax.ActionLink(" " + Model.FavouritesCount, "Favourite", "Tweets", new { id = Model.Id }, new AjaxOptions()
             {
                 HttpMethod = "POST",
-                OnComplete = "OnTweetFavourite"
             }, new { @class = "fa fa-star" })
             <a href="#"><i class="fa fa-share"></i></a>
         </div>

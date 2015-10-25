@@ -19,9 +19,9 @@
                 </li>
                 @if (Request.IsAuthenticated)
                 {
-                    var test = Html.Action("GetNotSeenNotificationsCount", "Notifications");
+                    var notificationsCount = Html.Action("GetNotSeenNotificationsCount", "Notifications");
                     <li>
-                        @Html.ActionLink(" Notifications", "All", "Notifications", null, new { @class = "fa fa-bell", id = "notificationsNavbar" })
+                        @Html.ActionLink(notificationsCount + " Notifications", "All", "Notifications", null, new { @class = "fa fa-bell", id = "notificationsNavbar" })
                     </li>
                 }
             </ul>
