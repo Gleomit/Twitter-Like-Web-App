@@ -1,4 +1,7 @@
-﻿using Twitter.App.Models.ViewModels.Tweet;
+﻿using System.Collections.Generic;
+using AutoMapper;
+using Twitter.App.Hubs;
+using Twitter.App.Models.ViewModels.Tweet;
 
 namespace Twitter.App.Controllers
 {
@@ -31,14 +34,20 @@ namespace Twitter.App.Controllers
 
             var user = this.Data.Users.Find(this.User.Identity.GetUserId());
 
-            this.Data.Tweets.Add(new Tweet()
+            var tweet = new Tweet()
             {
                 Content = model.Content,
                 UserId = user.Id,
-                TweetDate = DateTime.Now,
-            });
+                TweetDate = DateTime.Now
+            };
+
+            this.Data.Tweets.Add(tweet);
 
             this.Data.SaveChanges();
+
+            TwitterHub hub = new TwitterHub();
+
+            hub.InformFollowers(user.Followers.Select(u => u.Id).ToList(), tweet.Id);
 
             return RedirectToAction("Index", "Home");
         }
@@ -139,11 +148,31 @@ namespace Twitter.App.Controllers
                     CreatorId = user.Id,
                     Type = NotificationType.FavouriteTweet,
                 });
+
+                TwitterHub hub = new TwitterHub();
+
+                hub.NotificationInform(new List<string>() { tweet.User.UserName });
             }
 
             this.Data.SaveChanges();
 
             return null;
+        }
+
+        [Authorize]
+        [HttpGet]
+        public ActionResult GetTweet(int id)
+        {
+            var tweet = this.Data.Tweets.Find(id);
+
+            if (tweet == null)
+            {
+                throw  new ArgumentException("Tweet not found.");
+            }
+
+            var viewModel = Mapper.Map<TweetViewModel>(tweet);
+
+            return PartialView("_FullTweetPartial", viewModel);
         }
 
         [Authorize]
@@ -193,6 +222,10 @@ namespace Twitter.App.Controllers
             });
 
             this.Data.SaveChanges();
+
+            TwitterHub hub = new TwitterHub();
+
+            hub.NotificationInform(new List<string>() { tweet.User.UserName });
 
             return RedirectToAction("Index", "Home");
         }

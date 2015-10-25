@@ -7,6 +7,11 @@
 
     public class Notification
     {
+        public Notification()
+        {
+            this.Status = NotificationStatus.NotSeen;
+        }
+
         [Key]
         public int Id { get; set; }
 
@@ -28,5 +33,7 @@
 
         [Required]
         public NotificationType Type { get; set; }
+
+        public NotificationStatus Status { get; set; }
     }
 }

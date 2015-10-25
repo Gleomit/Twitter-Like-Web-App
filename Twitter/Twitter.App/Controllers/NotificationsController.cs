@@ -1,4 +1,6 @@
-﻿namespace Twitter.App.Controllers
+﻿using Twitter.Models.Enumerations;
+
+namespace Twitter.App.Controllers
 {
     using System.Linq;
     using Microsoft.AspNet.Identity;
@@ -23,11 +25,28 @@
 
             var notifications = user.Notifications
                 .OrderByDescending(n => n.Date)
-                .Skip(page - 1 * AppConstants.DefaultPageSize)
-                .Take(AppConstants.DefaultPageSize)
-                .ToList();
+                .Skip(page - 1*AppConstants.DefaultPageSize)
+                .Take(AppConstants.DefaultPageSize);
+
+            foreach (var notification in notifications)
+            {
+                notification.Status = NotificationStatus.Seen;
+            }
+
+            this.Data.SaveChanges();
 
             return null;
+        }
+
+        [Authorize]
+        [HttpGet]
+        public ActionResult GetNotSeenNotificationsCount()
+        {
+            var user = this.Data.Users.Find(this.User.Identity.GetUserId());
+
+            int notificationsCount = user.Notifications.Count(n => n.Status == NotificationStatus.NotSeen);
+
+            return this.Json(notificationsCount, JsonRequestBehavior.AllowGet);
         }
 
         [Authorize]
@@ -41,6 +60,11 @@
                 return this.Json("Not Found");
             }
 
+            if (notification.Status == NotificationStatus.NotSeen)
+            {
+                notification.Status = NotificationStatus.Seen;
+                this.Data.SaveChanges();
+            }
             return null;
         }
     }

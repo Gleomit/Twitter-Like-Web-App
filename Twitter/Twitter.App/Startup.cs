@@ -10,6 +10,7 @@ namespace Twitter.App
     {
         public void Configuration(IAppBuilder app)
         {
+            app.MapSignalR();
             ConfigureAuth(app);
         }
     }

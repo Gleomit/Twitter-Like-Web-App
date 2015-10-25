@@ -1,4 +1,5 @@
 ﻿using System.Web;
+using Twitter.App.Hubs;
 
 namespace Twitter.App.Controllers
 {
@@ -77,6 +78,10 @@ namespace Twitter.App.Controllers
             });
 
             this.Data.SaveChanges();
+
+            TwitterHub hub = new TwitterHub();
+
+            hub.NotificationInform(new List<string>() { user.UserName });
 
             return null;
         }

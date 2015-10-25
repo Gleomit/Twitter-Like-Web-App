@@ -1,5 +1,4 @@
-﻿
-<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+﻿<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -16,13 +15,14 @@
         <div class="collapse navbar-collapse" id="navbar-brand-centered">
             <ul class="nav navbar-nav">
                 <li>
-                    @Html.ActionLink(" Home", "Index", "Home", null, new { @class = "fa fa-home" })
+                    @Html.ActionLink(" Home", "Index", "Home", null, new { @class = "fa fa-home"})
                 </li>
                 @if (Request.IsAuthenticated)
                 {
-                <li>
-                    @Html.ActionLink(" Notifications", "All", "Notifications", null, new { @class = "fa fa-bell" })
-                </li>
+                    var test = Html.Action("GetNotSeenNotificationsCount", "Notifications");
+                    <li>
+                        @Html.ActionLink(" Notifications", "All", "Notifications", null, new { @class = "fa fa-bell", id = "notificationsNavbar" })
+                    </li>
                 }
             </ul>
 
