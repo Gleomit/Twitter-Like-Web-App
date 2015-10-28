@@ -1,9 +1,4 @@
-﻿using System.Collections.Generic;
-using AutoMapper;
-using Twitter.App.Hubs;
-using Twitter.App.Models.ViewModels.Tweet;
-
-namespace Twitter.App.Controllers
+﻿namespace Twitter.App.Controllers
 {
     using System;
     using System.Linq;
@@ -14,6 +9,12 @@ namespace Twitter.App.Controllers
     using System.Web.Mvc;
     using Twitter.App.Models.BindingModels.Tweet;
     using Twitter.Data.UnitOfWork;
+    using System.Collections.Generic;
+    using AutoMapper;
+    using Twitter.App.Hubs;
+    using Twitter.App.Models.ViewModels.Tweet;
+    using System.Net;
+    using Newtonsoft.Json;
 
     public class TweetsController : BaseController
     {
@@ -27,9 +28,14 @@ namespace Twitter.App.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Tweet(CreateTweetBindingModel model)
         {
+            if (model == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Missing data");
+            }
+
             if (!this.ModelState.IsValid)
             {
-                return Json(this.ModelState);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, JsonConvert.SerializeObject(this.ModelState));
             }
 
             var user = this.Data.Users.Find(this.User.Identity.GetUserId());
@@ -49,7 +55,7 @@ namespace Twitter.App.Controllers
 
             hub.InformFollowers(user.Followers.Select(u => u.UserName).ToList(), tweet.Id);
 
-            return RedirectToAction("Index", "Home");
+            return PartialView("_FullTweetPartial", Mapper.Map<TweetViewModel>(tweet));
         }
 
         [Authorize]
@@ -57,16 +63,21 @@ namespace Twitter.App.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Reply(int id, ReplyTweetBindingModel model)
         {
+            if (model == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Missing data");
+            }
+
             if (!this.ModelState.IsValid)
             {
-                return Json(this.ModelState);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, JsonConvert.SerializeObject(this.ModelState));
             }
 
             var replyTo = this.Data.Tweets.Find(id);
 
             if (replyTo == null)
             {
-                return this.Json("Not found");
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound, "Tweet not found");
             }
 
             var user = this.Data.Users.Find(this.User.Identity.GetUserId());
@@ -92,23 +103,17 @@ namespace Twitter.App.Controllers
 
             if (tweet == null)
             {
-                throw new NotImplementedException("Tweet does not exists");
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound, "Tweet not found.");
             }
 
             var user = this.Data.Users.Find(this.User.Identity.GetUserId());
 
             if (user.Tweets.Any(t => t.ReplyToId == tweet.Id))
             {
-                throw new Exception("You cannot retweet again");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Retweeting retweet is not possible at the time.");
             }
 
-            var viewModel = new RetweetViewModel()
-            {
-                TweetContent = tweet.Content,
-                UserPicture = tweet.User.ProfileImageBase64,
-                Username = tweet.User.UserName,
-                TweetId = tweet.Id
-            };
+            var viewModel = Mapper.Map<RetweetViewModel>(tweet);
 
             return PartialView("_ReTweetPartial", viewModel);
         }
@@ -128,7 +133,7 @@ namespace Twitter.App.Controllers
 
             if (tweet == null)
             {
-                throw new NotImplementedException("Tweet does not exists");
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound, "Tweet not found.");
             }
 
             var user = this.Data.Users.Find(this.User.Identity.GetUserId());
@@ -140,6 +145,7 @@ namespace Twitter.App.Controllers
             else
             {
                 user.FavouritedTweets.Add(tweet);
+
                 tweet.User.Notifications.Add(new Notification()
                 {
                     Content = "favourite",
@@ -156,6 +162,7 @@ namespace Twitter.App.Controllers
 
             this.Data.SaveChanges();
 
+            this.Response.StatusCode = (int) HttpStatusCode.OK;
             return this.Content(" " + tweet.FavouritedBy.Count());
         }
 
@@ -167,7 +174,7 @@ namespace Twitter.App.Controllers
 
             if (tweet == null)
             {
-                throw  new ArgumentException("Tweet not found.");
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound, "Tweet not found.");
             }
 
             var viewModel = Mapper.Map<TweetViewModel>(tweet);
@@ -180,28 +187,33 @@ namespace Twitter.App.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Retweet(ReTweetBindingModel model)
         {
+            if (model == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Missing data");
+            }
+
             if (!this.ModelState.IsValid)
             {
-                return Json(this.ModelState);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, JsonConvert.SerializeObject(this.ModelState));
             }
 
             var tweet = this.Data.Tweets.Find(model.TweetId);
 
             if (tweet == null)
             {
-                return this.Json("Not found");
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound, "Tweet not found.");
             }
 
             var user = this.Data.Users.Find(this.User.Identity.GetUserId());
 
             if (tweet.UserId == user.Id)
             {
-                throw new Exception("You can't retweet your own tweets");
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound, "You can't retweet your own tweets.");
             }
 
             if (user.Tweets.Any(t => t.ReplyToId == tweet.Id))
             {
-                throw new Exception("You cannot retweet again");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Retweeting retweet is not possible at the time.");
             }
 
             this.Data.Tweets.Add(new Tweet()

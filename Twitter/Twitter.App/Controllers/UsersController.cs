@@ -1,7 +1,4 @@
-﻿using System.Web;
-using Twitter.App.Hubs;
-
-namespace Twitter.App.Controllers
+﻿namespace Twitter.App.Controllers
 {
     using System;
     using Twitter.App.Models.BindingModels.User;
@@ -20,6 +17,10 @@ namespace Twitter.App.Controllers
     using Twitter.Models.Enumerations;
 
     using AutoMapper.QueryableExtensions;
+    using System.Net;
+    using System.Web;
+    using Newtonsoft.Json;
+    using Twitter.App.Hubs;
 
     public class UsersController : BaseController
     {
@@ -29,6 +30,7 @@ namespace Twitter.App.Controllers
         }
 
         [Authorize]
+        [HttpGet]
         public ActionResult Index(int page = AppConstants.DefaultPageIndex)
         {
             List<TweetViewModel> tweets = new List<TweetViewModel>();
@@ -56,14 +58,14 @@ namespace Twitter.App.Controllers
 
             if (user == null)
             {
-                throw new ArgumentException("User not found");
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound, "User not found.");
             }
 
             var currentUser = this.Data.Users.Find(this.User.Identity.GetUserId());
 
             if (currentUser.UserName == user.UserName)
             {
-                throw new InvalidOperationException("Cannot follow yourself");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "You cannot follow yourself.");
             }
 
             user.Followers.Add(currentUser);
@@ -93,7 +95,7 @@ namespace Twitter.App.Controllers
 
             if (user == null)
             {
-                throw new ArgumentException("User does not exists");
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound, "User not found.");
             }
 
             var userProfile = Mapper.Map<UserProfileViewModel>(user);
@@ -126,14 +128,14 @@ namespace Twitter.App.Controllers
 
             if (user == null)
             {
-                throw new ArgumentException("User not found");
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound, "User not found.");
             }
 
             var currentUser = this.Data.Users.Find(this.User.Identity.GetUserId());
 
             if (!user.Followers.Any(u => u == currentUser))
             {
-                return Json("You cannot unfollow someone whom you currently do not follow");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "You cannot unfollow someone whom you currently don't follow.");
             }
 
             user.Followers.Remove(currentUser);
@@ -150,11 +152,11 @@ namespace Twitter.App.Controllers
 
             if (user == null)
             {
-                throw new ArgumentException("User does not exists");
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound, "User not found.");
             }
 
             var followers = user.Followers
-                .Skip((page - 1)*AppConstants.DefaultPageSize)
+                .Skip((page - 1) * AppConstants.DefaultPageSize)
                 .Take(AppConstants.DefaultPageSize)
                 .AsQueryable();
 
@@ -168,7 +170,7 @@ namespace Twitter.App.Controllers
 
             if (user == null)
             {
-                throw new ArgumentException("User does not exists");
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound, "User not found.");
             }
 
             var following = user.FollowedUsers.ToList();
@@ -183,11 +185,11 @@ namespace Twitter.App.Controllers
 
             if (user == null)
             {
-                throw new ArgumentException("User does not exists");
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound, "User not found.");
             }
 
             var favouriteTweets = user.FavouritedTweets
-                .Skip((page - 1)*AppConstants.DefaultPageSize)
+                .Skip((page - 1) * AppConstants.DefaultPageSize)
                 .Take(AppConstants.DefaultPageSize)
                 .AsQueryable()
                 .ProjectTo<TweetViewModel>()
@@ -203,7 +205,7 @@ namespace Twitter.App.Controllers
 
             if (user == null)
             {
-                throw new ArgumentException("User does not exists");
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound, "User not found.");
             }
 
             var tweets = user.Tweets
@@ -235,9 +237,14 @@ namespace Twitter.App.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditProfile(UserEditProfileBindingModel model)
         {
+            if (model == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Missing data");
+            }
+
             if (!this.ModelState.IsValid)
             {
-                return this.Json(this.ModelState);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, JsonConvert.SerializeObject(this.ModelState));
             }
 
             var user = this.Data.Users.Find(this.User.Identity.GetUserId());

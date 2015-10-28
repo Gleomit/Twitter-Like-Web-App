@@ -1,4 +1,4 @@
-﻿using Twitter.Models.Enumerations;
+﻿using WebGrease.Css.Extensions;
 
 namespace Twitter.App.Controllers
 {
@@ -9,6 +9,7 @@ namespace Twitter.App.Controllers
     using System.Web.Mvc;
 
     using Twitter.App.Constants;
+    using Twitter.Models.Enumerations;
 
     public class NotificationsController : BaseController
     {
@@ -25,13 +26,11 @@ namespace Twitter.App.Controllers
 
             var notifications = user.Notifications
                 .OrderByDescending(n => n.Date)
-                .Skip(page - 1*AppConstants.DefaultPageSize)
+                .Skip(page - 1 * AppConstants.DefaultPageSize)
                 .Take(AppConstants.DefaultPageSize);
 
-            foreach (var notification in notifications)
-            {
-                notification.Status = NotificationStatus.Seen;
-            }
+            user.Notifications.Where(n => n.Status == NotificationStatus.NotSeen)
+               .ForEach(n => n.Status = NotificationStatus.Seen);
 
             this.Data.SaveChanges();
 
@@ -65,6 +64,7 @@ namespace Twitter.App.Controllers
                 notification.Status = NotificationStatus.Seen;
                 this.Data.SaveChanges();
             }
+
             return null;
         }
     }

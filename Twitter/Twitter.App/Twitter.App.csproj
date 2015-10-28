@@ -337,6 +337,7 @@
     <Folder Include="Models\ViewModels\Message\" />
     <Folder Include="Models\ViewModels\Report\" />
     <Folder Include="Providers\" />
+    <Folder Include="Views\Notification\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
