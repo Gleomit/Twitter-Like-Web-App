@@ -20,8 +20,10 @@
             }, new { @class = "fa fa-retweet", id = "retweetBtn" })
             @Ajax.ActionLink(" " + Model.FavouritesCount, "Favourite", "Tweets", new { id = Model.Id }, new AjaxOptions()
             {
+                UpdateTargetId = "favouriteBtn" + Model.Id,
+                InsertionMode = InsertionMode.Replace,
                 HttpMethod = "POST",
-            }, new { @class = "fa fa-star" })
+            }, new { @class = "fa fa-star", id = "favouriteBtn" + Model.Id })
             <a href="#"><i class="fa fa-share"></i></a>
         </div>
         <span>@Model.TweetDate</span>

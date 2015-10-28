@@ -47,7 +47,7 @@ namespace Twitter.App.Controllers
 
             TwitterHub hub = new TwitterHub();
 
-            hub.InformFollowers(user.Followers.Select(u => u.Id).ToList(), tweet.Id);
+            hub.InformFollowers(user.Followers.Select(u => u.UserName).ToList(), tweet.Id);
 
             return RedirectToAction("Index", "Home");
         }
@@ -156,7 +156,7 @@ namespace Twitter.App.Controllers
 
             this.Data.SaveChanges();
 
-            return null;
+            return this.Content(" " + tweet.FavouritedBy.Count());
         }
 
         [Authorize]
