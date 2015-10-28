@@ -114,6 +114,7 @@
             }
 
             var viewModel = Mapper.Map<RetweetViewModel>(tweet);
+            viewModel.Content = "";
 
             return PartialView("_ReTweetPartial", viewModel);
         }
@@ -208,7 +209,7 @@
 
             if (tweet.UserId == user.Id)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.NotFound, "You can't retweet your own tweets.");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "You can't retweet your own tweets.");
             }
 
             if (user.Tweets.Any(t => t.ReplyToId == tweet.Id))

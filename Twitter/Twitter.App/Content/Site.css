@@ -43,4 +43,8 @@
     }
 }
 
-
+.retweet-tweetShow {
+    margin-top: 10px;
+    padding: 15px;
+    border: 1px solid #000;
+}

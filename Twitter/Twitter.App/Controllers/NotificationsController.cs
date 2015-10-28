@@ -1,6 +1,4 @@
-﻿using WebGrease.Css.Extensions;
-
-namespace Twitter.App.Controllers
+﻿namespace Twitter.App.Controllers
 {
     using System.Linq;
     using Microsoft.AspNet.Identity;
@@ -10,6 +8,7 @@ namespace Twitter.App.Controllers
 
     using Twitter.App.Constants;
     using Twitter.Models.Enumerations;
+    using WebGrease.Css.Extensions;
 
     public class NotificationsController : BaseController
     {
@@ -34,7 +33,7 @@ namespace Twitter.App.Controllers
 
             this.Data.SaveChanges();
 
-            return null;
+            return View(notifications);
         }
 
         [Authorize]

@@ -328,6 +328,7 @@
     <Content Include="Views\Shared\EditorTemplates\DateTime.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\NumberField.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\TextField.cshtml" />
+    <Content Include="Views\Notifications\All.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -337,7 +338,6 @@
     <Folder Include="Models\ViewModels\Message\" />
     <Folder Include="Models\ViewModels\Report\" />
     <Folder Include="Providers\" />
-    <Folder Include="Views\Notification\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
