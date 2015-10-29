@@ -72,7 +72,7 @@
 
             user.Notifications.Add(new Notification()
             {
-                Content = "test",
+                Content = "followed you",
                 CreatorId = currentUser.Id,
                 RecipientId = user.Id,
                 Date = DateTime.Now,
@@ -85,7 +85,7 @@
 
             hub.NotificationInform(new List<string>() { user.UserName });
 
-            return null;
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
         [HttpGet]
@@ -142,7 +142,7 @@
 
             this.Data.SaveChanges();
 
-            return null;
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
         [HttpGet]
@@ -158,13 +158,14 @@
             var followers = user.Followers
                 .Skip((page - 1) * AppConstants.DefaultPageSize)
                 .Take(AppConstants.DefaultPageSize)
-                .AsQueryable();
+                .AsQueryable()
+                .ToList();
 
             return null;
         }
 
         [HttpGet]
-        public ActionResult Following(string username)
+        public ActionResult Following(string username, int page = AppConstants.DefaultPageIndex)
         {
             var user = this.Data.Users.All().FirstOrDefault(u => u.UserName == username);
 
@@ -173,7 +174,11 @@
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound, "User not found.");
             }
 
-            var following = user.FollowedUsers.ToList();
+            var following = user.FollowedUsers
+                .Skip((page - 1) * AppConstants.DefaultPageSize)
+                .Take(AppConstants.DefaultPageSize)
+                .AsQueryable()
+                .ToList();
 
             return null;
         }

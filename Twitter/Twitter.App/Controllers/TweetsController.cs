@@ -149,7 +149,7 @@
 
                 tweet.User.Notifications.Add(new Notification()
                 {
-                    Content = "favourite",
+                    Content = "favourited one of your tweets",
                     RecipientId = tweet.UserId,
                     Date = DateTime.Now,
                     CreatorId = user.Id,
@@ -227,7 +227,7 @@
 
             tweet.User.Notifications.Add(new Notification()
             {
-                Content = "Retweet",
+                Content = "retweeted one of your tweets",
                 CreatorId = user.Id,
                 RecipientId = tweet.UserId,
                 Date = DateTime.Now,
@@ -251,10 +251,12 @@
 
             if (tweet == null)
             {
-                throw new Exception("Tweet not found");
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound, "Tweet not found.");
             }
 
-            return null;
+            var user = this.Data.Users.Find(this.User.Identity.GetUserId());
+
+            throw new NotImplementedException();
         }
     }
 }

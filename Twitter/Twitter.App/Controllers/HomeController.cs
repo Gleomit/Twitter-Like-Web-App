@@ -17,6 +17,7 @@
         {
         }
 
+        [HttpGet]
         public ActionResult Index(int page = AppConstants.DefaultPageIndex)
         {
             List<TweetViewModel> tweets = new List<TweetViewModel>();

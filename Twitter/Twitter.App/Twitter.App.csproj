@@ -329,6 +329,7 @@
     <Content Include="Views\Shared\EditorTemplates\NumberField.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\TextField.cshtml" />
     <Content Include="Views\Notifications\All.cshtml" />
+    <Content Include="Views\Notifications\FollowingUsers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
